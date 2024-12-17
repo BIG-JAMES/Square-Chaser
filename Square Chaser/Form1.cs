@@ -26,10 +26,10 @@ namespace Square_Chaser
 
         Pen bluepen = new Pen(Color.White);
 
-        SolidBrush redBrush = new SolidBrush(Color.Red);
+        SolidBrush GrayBrush = new SolidBrush(Color.Gray);
         SolidBrush YellowBrush = new SolidBrush(Color.Yellow);
-        SolidBrush FuchsiaBrush = new SolidBrush(Color.Fuchsia);
-        SolidBrush darkredBrush = new SolidBrush(Color.DarkRed);
+        SolidBrush TransparentBrush = new SolidBrush(Color.Transparent);
+        SolidBrush WhiteBrush = new SolidBrush(Color.White);
 
 
         //player info
@@ -149,6 +149,8 @@ namespace Square_Chaser
                 player1.X -= player1Speed;
             }
 
+            player1lable.Location = player1.Location;
+
             //Move player 2
             if (upPressed == true && player2.Y > 0)
             {
@@ -169,6 +171,8 @@ namespace Square_Chaser
             {
                 player2.X += player2Speed;
             }
+
+            player2lable.Location = player2.Location;
 
             //right wall
             if (player1.X > 330)
@@ -207,7 +211,11 @@ namespace Square_Chaser
                 player2.Y = 329;
             }
 
+
+
             //points
+            speedlable.Location = speedboost.Location;
+
             if (player1.IntersectsWith(pointy))
             {
                 pointy.X = readomnum.Next(15, 350);
@@ -241,7 +249,7 @@ namespace Square_Chaser
 
                 soundPlayer = new SoundPlayer(Properties.Resources._8_bit_game_sfx_sound_21_269970);
                 soundPlayer.Play();
-                player1Speed = 4 + 2;
+                player1Speed = 4 + 6;
                 speedtime.Enabled = true;
             }
             else if (player2.IntersectsWith(speedboost))
@@ -254,21 +262,30 @@ namespace Square_Chaser
 
                 soundPlayer = new SoundPlayer(Properties.Resources._8_bit_game_sfx_sound_21_269970);
                 soundPlayer.Play();
-                player1Speed = 4 + 2;
+                player2Speed = 4 + 6;
                 speedtime.Enabled = true;
             }
 
-            Refresh();
+
+            //custom method
+            bool stop = false;
 
             if (player1Score == 5)
             {
-                gameTimer.Stop();
+                stop = true;
             }
             if (player2Score == 5)
             {
+                stop = true;
+            }
+
+            if (stop == true)
+            {
                 gameTimer.Stop();
             }
+            Refresh();
         }
+
 
         public game()
         {
@@ -305,12 +322,12 @@ namespace Square_Chaser
             }
 
             //drawing 
-            e.Graphics.FillRectangle(redBrush, player1);
-            e.Graphics.FillRectangle(darkredBrush, player2);
+            e.Graphics.FillRectangle(GrayBrush, player1);
+            e.Graphics.FillRectangle(WhiteBrush, player2);
             e.Graphics.FillRectangle(YellowBrush, pointy);
-            e.Graphics.FillEllipse(FuchsiaBrush, speedboost);
+            e.Graphics.FillEllipse(TransparentBrush, speedboost);
             e.Graphics.FillRectangle(YellowBrush, pointx);
-            e.Graphics.DrawRectangle(bluepen, 15, 15, 350, 350);
+            e.Graphics.DrawRectangle(bluepen, 15, 15, 354, 354);
         }
 
         private void speedtime_Tick(object sender, EventArgs e)
@@ -319,11 +336,6 @@ namespace Square_Chaser
 
             player1Speed = 4;
             player2Speed = 4;
-        }
-
-        private void game_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
